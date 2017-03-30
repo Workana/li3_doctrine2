@@ -16,6 +16,7 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Tools\Setup;
+use lithium\aop\Filters;
 
 /**
  * This datasource provides integration of Doctrine2 models
@@ -77,6 +78,8 @@ class Doctrine extends Source
      */
     protected function createEntityManager()
     {
+        var_dump('Se llama a create');
+        exit;
         $configuration = Setup::createAnnotationMetadataConfiguration(
             [$this->_config['models']],
             Environment::is('development'),
@@ -94,7 +97,16 @@ class Doctrine extends Source
 
         $connection = $this->connectionSettings;
         $params = compact('connection', 'configuration', 'eventManager');
-        return $this->_filter(__METHOD__, $params, function ($self, $params) {
+
+        Filters::apply($this, __METHOD__, function($params) {
+            return EntityManager::create(
+                $params['connection'],
+                $params['configuration'],
+                $params['eventManager']
+            );
+        });
+
+        return Filters::run($this, __METHOD__, $params, function($params) {
             return EntityManager::create(
                 $params['connection'],
                 $params['configuration'],
