@@ -10,6 +10,7 @@ namespace li3_doctrine2\extensions\data\source;
 
 use lithium\core\Environment;
 use lithium\data\Source;
+use lithium\aop\Filters;
 use Doctrine\Common\EventManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Events;
@@ -98,15 +99,7 @@ class Doctrine extends Source
         $connection = $this->connectionSettings;
         $params = compact('connection', 'configuration', 'eventManager');
 
-        Filters::apply($this, __METHOD__, function($params) {
-            return EntityManager::create(
-                $params['connection'],
-                $params['configuration'],
-                $params['eventManager']
-            );
-        });
-
-        return Filters::run($this, __METHOD__, $params, function($params) {
+        return Filters::run($this, __FUNCTION__, $params, function($params) {
             return EntityManager::create(
                 $params['connection'],
                 $params['configuration'],
