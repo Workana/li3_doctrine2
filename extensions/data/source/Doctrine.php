@@ -78,8 +78,6 @@ class Doctrine extends Source
      */
     protected function createEntityManager()
     {
-        var_dump('Se llama a create');
-        exit;
         $configuration = Setup::createAnnotationMetadataConfiguration(
             [$this->_config['models']],
             Environment::is('development'),
