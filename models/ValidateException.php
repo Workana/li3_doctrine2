@@ -21,8 +21,10 @@ class ValidateException extends \Exception
 			$errors = $entity;
 		}
 
-        $this->errors = $this->convertToOldStyle($errors);
-
+		if (!empty($errors)) {
+            $this->errors = $this->convertToOldStyle($errors);
+        }
+        
 		$message = is_string($entity) ? $entity : '';
 		if (!empty($this->errors)) {
 			$first = current($this->errors);
