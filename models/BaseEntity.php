@@ -198,7 +198,7 @@ abstract class BaseEntity extends \lithium\data\Entity implements IModel {
 		}
 
 		foreach($data as $field => $value) {
-			if (!is_string($field) || is_null($value)) {
+			if (!is_string($field)) {
 				continue;
 			}
 			$method = 'set' . Inflector::camelize($field);
